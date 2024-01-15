@@ -1,0 +1,3 @@
+return {
+	"wilbowma/scribble.vim",
+}
