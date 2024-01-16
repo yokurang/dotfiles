@@ -20,6 +20,9 @@ return {
 				"pylint", -- python linter
 				"eslint_d", -- js linter
 				"clang_format", -- c/c++ formatter
+				"mypy", -- python type checker
+				"ruff",
+				"rapper",
 			},
 		})
 
@@ -51,6 +54,8 @@ return {
 						return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs" }) -- only enable if root has .eslintrc.js or .eslintrc.cjs
 					end,
 				}),
+				diagnostics.mypy,
+				diagnostics.ruff,
 			},
 			-- configure format on save
 			on_attach = function(current_client, bufnr)

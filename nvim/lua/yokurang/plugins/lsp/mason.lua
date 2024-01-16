@@ -39,6 +39,8 @@ return {
 				"pyright",
 				"rust_analyzer",
 				"ocamllsp",
+				-- debuggers
+				"debugpy",
 			},
 			-- auto-install configured servers (with lspconfig)
 			automatic_installation = true, -- not the same as ensure_installed
