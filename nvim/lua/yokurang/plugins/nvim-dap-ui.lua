@@ -16,7 +16,7 @@ return {
 	opts = {
 		controls = {
 			element = "repl",
-			enabled = false,
+			enabled = true,
 			icons = {
 				disconnect = "",
 				pause = "",

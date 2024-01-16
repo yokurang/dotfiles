@@ -5,7 +5,12 @@ return {
 	config = function()
 		require("mason").setup()
 		require("mason-nvim-dap").setup({
-			ensure_installed = { "stylua", "jq" },
+			ensure_installed = {
+				"stylua",
+				"jq",
+				"debugpy",
+				"cpptools",
+			},
 			handlers = {
 				function(config)
 					-- all sources with no handler get passed here
