@@ -4,11 +4,12 @@ return {
 	dependencies = {
 		"micangl/cmp-vimtex",
 		"kdheepak/cmp-latex-symbols",
+		"xuhdev/vim-latex-live-preview",
 	},
 	config = function()
 		vim.g["vimtex_view_method"] = "zathura"
 		vim.g["vimtex_quickfix_mode"] = 0
-
+		vim.g["vimtex_compiler_method"] = "latexmk"
 		-- Ignore mappings
 		vim.g["vimtex_mappings_enabled"] = 0
 
@@ -28,8 +29,8 @@ return {
 			"Token not allowed in a PDF string",
 		}
 
-		vim.g["vimtex_context_pdf_viewer"] = "okular"
-
+		vim.g["vimtex_context_pdf_viewer"] = "zathura"
+		vim.g["livepreview_previewer"] = "zathura"
 		require("cmp_vimtex").setup({
 			additional_information = {
 				info_in_menu = true,
