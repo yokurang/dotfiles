@@ -21,8 +21,7 @@ return {
 				"eslint_d", -- js linter
 				"clang_format", -- c/c++ formatter
 				"mypy", -- python type checker
-				"ruff",
-				"rapper",
+				"ocamlformat", -- ocaml formatter
 			},
 		})
 
@@ -48,6 +47,7 @@ return {
 				formatting.isort,
 				formatting.black,
 				formatting.clang_format,
+				formatting.ocamlformat,
 				diagnostics.pylint,
 				diagnostics.eslint_d.with({ -- js/ts linter
 					condition = function(utils)
@@ -55,7 +55,6 @@ return {
 					end,
 				}),
 				diagnostics.mypy,
-				diagnostics.ruff,
 			},
 			-- configure format on save
 			on_attach = function(current_client, bufnr)

@@ -42,9 +42,8 @@ return {
 					"dockerfile",
 					"gitignore",
 					"query",
-					"python",
-					"rust",
 					"ocaml",
+					"rust",
 				},
 				incremental_selection = {
 					enable = true,
