@@ -7,6 +7,7 @@ return {
 		"numToStr/Comment.nvim", -- Optional
 		"nvim-telescope/telescope.nvim", -- Optional
 	},
+	vim.keymap.set("n", "<leader>nb", "<cmd>Navbuddy<cr>"),
 	config = function()
 		local navbuddy = require("nvim-navbuddy")
 		local actions = require("nvim-navbuddy.actions")

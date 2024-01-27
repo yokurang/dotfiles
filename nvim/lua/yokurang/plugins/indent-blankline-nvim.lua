@@ -1,12 +1,9 @@
--- Indentation guides
 return {
 	"lukas-reineke/indent-blankline.nvim",
-	event = "VeryLazy",
+	after = "nvim-treesitter",
 	main = "ibl",
-	opts = {
-		enabled = true,
-		indent = {
-			char = "|",
-		},
-	},
+	opts = {},
+	config = function()
+		require("ibl").setup()
+	end,
 }

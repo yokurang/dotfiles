@@ -1,5 +1,7 @@
 return {
 	"ahmedkhalf/project.nvim",
+
+	vim.keymap.set("n", "<leader>pf", "<cmd>Telescope projects<cr>", { desc = "Open Project" }),
 	config = function()
 		-- lua
 		require("nvim-tree").setup({
