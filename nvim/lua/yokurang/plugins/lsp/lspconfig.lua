@@ -57,7 +57,29 @@ return {
 
 			opts.desc = "Restart LSP"
 			keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+			-- code lens
+			if client.resolved_capabilities.code_lens then
+				local codelens = vim.api.nvim_create_augroup("LSPCodeLens", { clear = true })
+				vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "CursorHold" }, {
+					group = codelens,
+					callback = function()
+						vim.lsp.codelens.refresh()
+					end,
+					buffer = bufnr,
+				})
+			end
 		end
+
+		local c = vim.lsp.protocol.make_client_capabilities()
+		c.textDocument.completion.completionItem.snippetSupport = true
+		c.textDocument.completion.completionItem.resolveSupport = {
+			properties = {
+				"documentation",
+				"detail",
+				"additionalTextEdits",
+			},
+		}
 
 		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = cmp_nvim_lsp.default_capabilities()
@@ -162,6 +184,16 @@ return {
 		lspconfig["ocamllsp"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
+			cmd = { "ocamllsp" },
+			filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
+			root_dir = lspconfig.util.root_pattern(
+				"*.opam",
+				"esy.json",
+				"package.json",
+				".git",
+				"dune-project",
+				"dune-workspace"
+			),
 			get_language_id = function(_, ftype)
 				return ftype
 			end,

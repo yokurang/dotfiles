@@ -4,7 +4,7 @@ return {
 	-- enabled = false,
 	dependencies = {
 		"MunifTanjim/nui.nvim",
-		"rcarriga/nvim-notify",
+		-- "rcarriga/nvim-notify",
 	},
 	config = {
 		lsp = {

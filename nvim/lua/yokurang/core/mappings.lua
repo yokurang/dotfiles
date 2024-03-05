@@ -11,9 +11,9 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.dap_virtual_text = true
 vim.g.slime_target = "tmux"
 
--- ******** -- 
+-- ******** --
 
--- Modes 
+-- Modes
 --  Normal mode = "n"
 --  Insert mode = "i"
 --  Visual mode = "v"
@@ -21,7 +21,7 @@ vim.g.slime_target = "tmux"
 --  Term mode = "t"
 --  Command mode = "c"
 
--- ******** -- 
+-- ******** --
 
 -- Normal mode configurations --
 

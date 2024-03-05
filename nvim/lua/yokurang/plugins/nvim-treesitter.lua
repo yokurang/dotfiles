@@ -22,6 +22,15 @@ return {
 				autotag = {
 					enable = true,
 				},
+				sync_install = true,
+				rainbow = {
+					enable = true,
+					extended_mode = true,
+					max_file_lines = nil,
+				},
+				autopairs = {
+					enable = true,
+				},
 				-- ensure these language parsers are installed
 				ensure_installed = {
 					"json",
