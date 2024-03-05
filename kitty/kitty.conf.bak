@@ -67,6 +67,6 @@ allow_hyperlinks yes
 term xterm-kitty
 
 # BEGIN_KITTY_THEME
-# 1984 Orwellian
+# Apprentice
 include current-theme.conf
 # END_KITTY_THEME
