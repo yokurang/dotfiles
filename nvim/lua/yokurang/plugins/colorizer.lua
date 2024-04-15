@@ -3,3 +3,4 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	config = true,
 }
+

@@ -4,3 +4,4 @@ return {
 		require("goto-preview").setup({})
 	end,
 }
+

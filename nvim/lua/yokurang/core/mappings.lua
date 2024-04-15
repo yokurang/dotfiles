@@ -39,10 +39,10 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
 -- Tab navigations
-keymap("n", "<leader>tt", ":tabnew<CR>", opts) -- open new tab
-keymap("n", "<leader>tw", ":tabclose<CR>", opts) -- close current tab
-keymap("n", "<leader>]", ":tabn<CR>", opts) --  go to next tab
-keymap("n", "<leader>[", ":tabp<CR>", opts) --  go to previous tab
+keymap("n", "<C-t>", ":tabnew<CR>", opts) -- open new tab
+keymap("n", "<C-w>", ":tabclose<CR>", opts) -- close current tab
+keymap("n", "<C-]>", ":tabn<CR>", opts) --  go to next tab
+keymap("n", "<C-[>", ":tabp<CR>", opts) --  go to previous tab
 
 -- Resize window
 keymap("n", "<C-Up>", ":resize +2<CR>", opts)
@@ -51,8 +51,8 @@ keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffer
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
-keymap("n", "<S-l>", ":bnext<CR>", opts)
+keymap("n", "<S-p>", ":bprevious<CR>", opts)
+keymap("n", "<S-n>", ":bnext<CR>", opts)
 
 -- Visual mode configurations --
 
@@ -68,8 +68,8 @@ keymap("v", "p", '"_dP', opts)
 -- Move texts
 keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
-keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
-keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
+keymap("x", "<S-j>", ":move '>+1<CR>gv-gv", opts)
+keymap("x", "<S-k>", ":move '<-2<CR>gv-gv", opts)
 
 -- Terminal configurations --
 

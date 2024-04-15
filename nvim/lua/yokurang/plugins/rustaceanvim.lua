@@ -26,3 +26,4 @@ return {
 		end, { silent = true, buffer = bufnr })
 	end,
 }
+

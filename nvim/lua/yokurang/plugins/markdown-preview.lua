@@ -14,3 +14,4 @@ return {
   keymap.set('n', '<leader>ms', '<cmd>MarkdownPreviewStop<cr>')
   end,
 }
+

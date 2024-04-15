@@ -1,1 +1,0 @@
-require("yokurang.after.ftplugin")
