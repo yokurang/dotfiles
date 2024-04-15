@@ -15,12 +15,12 @@ return {
 		mason_null_ls.setup({
 			ensure_installed = {
 				"prettier", -- prettier formatter
-				"stylua", -- lua formatter
-				"black", -- python formatter
-				"pylint", -- python linter
+				"stylua",   -- lua formatter
+				"black",    -- python formatter
+				"pylint",   -- python linter
 				"eslint_d", -- js linter
 				"clang_format", -- c/c++ formatter
-				"mypy", -- python type checker
+				"mypy",     -- python type checker
 				"ocamlformat", -- ocaml formatter
 			},
 		})
@@ -42,14 +42,14 @@ return {
 				--  "formatting.prettier.with({disabled_filetypes: {}})" (see null-ls docs)
 				formatting.prettier.with({
 					extra_filetypes = { "svelte" },
-				}), -- js/ts formatter
+				}),            -- js/ts formatter
 				formatting.stylua, -- lua formatter
 				formatting.isort,
 				formatting.black,
 				formatting.clang_format,
 				formatting.ocamlformat,
 				diagnostics.pylint,
-				diagnostics.eslint_d.with({ -- js/ts linter
+				diagnostics.eslint_d.with({                                   -- js/ts linter
 					condition = function(utils)
 						return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs" }) -- only enable if root has .eslintrc.js or .eslintrc.cjs
 					end,
@@ -78,4 +78,3 @@ return {
 		})
 	end,
 }
-
