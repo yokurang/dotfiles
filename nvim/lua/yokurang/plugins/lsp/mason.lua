@@ -18,5 +18,34 @@ return {
         },
       },
     })
+
+    require("mason-lspconfig").setup({
+      ensure_installed = {
+        "tsserver",
+        "html",
+        "cssls",
+        "tailwindcss",
+        "svelte",
+        "lua_ls",
+        "graphql",
+        "emmet_ls",
+        "prismals",
+        "pyright",
+        "rust-analyzer",
+        "clangd",
+        "codelldb",
+      },
+    })
+
+    require("mason-tool-installer").setup({
+      ensure_installed = {
+        "prettier", -- prettier formatter
+        "stylua",   -- lua formatter
+        "isort",    -- python formatter
+        "black",    -- python formatter
+        "pylint",
+        "eslint_d",
+      },
+    })
   end,
 }
