@@ -34,6 +34,7 @@ return {
         "rust-analyzer",
         "clangd",
         "codelldb",
+        "omnisharp",
       },
     })
 

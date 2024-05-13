@@ -6,7 +6,7 @@ This repository contains my configuration files. To set up my configurations on 
 ln -s ~/dotfiles/.zshrc ~/.zshrc
 ln -s ~/dotfiles/nvim ~/.config/nvim
 ln -s ~/dotfiles/tmux ~/.config/tmux
-ln -s ~/dotfiles/kitty ~/.config/wezterm
+ln -s ~/dotfiles/wezterm ~/.config/wezterm
 ```
 
 To use `tmux`, remember to install the packages using
