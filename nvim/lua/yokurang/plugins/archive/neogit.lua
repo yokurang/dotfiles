@@ -11,3 +11,4 @@ return {
 	vim.keymap.set("n", "<leader>ng", "<cmd>Neogit<cr>", { desc = "Open Neogit" }),
 	config = true,
 }
+
