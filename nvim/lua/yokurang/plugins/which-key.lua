@@ -1,29 +1,18 @@
 local Terminal = require("toggleterm.terminal").Terminal
 
 local float_term = Terminal:new({ direction = "float" })
-local lazygit_term = Terminal:new({ cmd = "lazygit", direction = "float" })
 
 function _G.toggle_float()
 	float_term:toggle()
-end
-
-function _G.toggle_lazygit()
-	lazygit_term:toggle()
 end
 
 local mappings = {
 	t = {
 		t = { ":ToggleTerm<cr>", "Split Below" },
 		f = { toggle_float, "Floating Terminal" },
-		l = { toggle_lazygit, "LazyGit" },
 	},
 	f = { ":Telescope find_files<cr>", "Telescope Find Files" },
 	r = { ":Telescope live_grep<cr>", "Telescope Live Grep" },
-	z = {
-		name = "Focus",
-		z = { ":ZenMode<cr>", "Toggle Zen Mode" },
-		t = { ":Twilight<cr>", "Toggle Twilight" },
-	},
 }
 
 local opts = {
@@ -54,9 +43,9 @@ return {
 					motions = true, -- adds help for motions
 					text_objects = true, -- help for text objects triggered after entering an operator
 					windows = true, -- default bindings on <c-w>
-					nav = true, -- misc bindings to work with windows
-					z = true, -- bindings for folds, spelling and others prefixed with z
-					g = true, -- bindings for prefixed with g
+					nav = true,     -- misc bindings to work with windows
+					z = true,       -- bindings for folds, spelling and others prefixed with z
+					g = true,       -- bindings for prefixed with g
 				},
 			},
 			icons = {
@@ -65,20 +54,19 @@ return {
 				group = "+", -- symbol prepended to a group
 			},
 			window = {
-				border = "none", -- none, single, double, shadow
-				position = "bottom", -- bottom, top
+				border = "none",      -- none, single, double, shadow
+				position = "bottom",  -- bottom, top
 				margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
 				padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
 			},
 			layout = {
 				height = { min = 4, max = 25 }, -- min and max height of the columns
 				width = { min = 20, max = 50 }, -- min and max width of the columns
-				spacing = 3, -- spacing between columns
-				align = "center", -- align columns left, center or right
+				spacing = 3,                -- spacing between columns
+				align = "center",           -- align columns left, center or right
 			},
-			ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
+			ignore_missing = false,       -- enable this to hide mappings for which you didn't specify a label
 		})
 		wk.register(mappings, opts)
 	end,
 }
-
