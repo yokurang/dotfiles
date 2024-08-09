@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   { import = "yokurang.plugins" },
+  { import = "yokurang.plugins.languages" },
   { import = "yokurang.plugins.lsp" } }, {
   install = {
     colorscheme = { "nightfly" },
