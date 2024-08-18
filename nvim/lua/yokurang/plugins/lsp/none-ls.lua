@@ -22,6 +22,7 @@ return {
 				"clang_format", -- c/c++ formatter
 				"mypy",     -- python type checker
 				"ocamlformat", -- ocaml formatter
+				"rustfmt",  -- rust formatter
 			},
 		})
 
@@ -48,6 +49,7 @@ return {
 				formatting.black,
 				formatting.clang_format,
 				formatting.ocamlformat,
+				formatting.rustfmt,
 				diagnostics.pylint,
 				diagnostics.eslint_d.with({                                   -- js/ts linter
 					condition = function(utils)
