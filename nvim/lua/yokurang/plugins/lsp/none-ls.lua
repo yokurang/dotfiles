@@ -23,6 +23,7 @@ return {
 				"mypy",     -- python type checker
 				"ocamlformat", -- ocaml formatter
 				"rustfmt",  -- rust formatter
+				"coq-lsp",  -- coq formatter
 			},
 		})
 
@@ -50,7 +51,9 @@ return {
 				formatting.clang_format,
 				formatting.ocamlformat,
 				formatting.rustfmt,
+				formatting.coq_lsp,
 				diagnostics.pylint,
+				diagnostics.coq_lsp,
 				diagnostics.eslint_d.with({                                   -- js/ts linter
 					condition = function(utils)
 						return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs" }) -- only enable if root has .eslintrc.js or .eslintrc.cjs

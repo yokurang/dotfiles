@@ -51,8 +51,8 @@ keymap("n", "<C-o>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-p>", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffer
-keymap("n", "<S-p>", ":bprevious<CR>", opts)
-keymap("n", "<S-n>", ":bnext<CR>", opts)
+keymap("n", "<S-bp>", ":bprevious<CR>", opts)
+keymap("n", "<S-bn>", ":bnext<CR>", opts)
 
 -- Visual mode configurations --
 

@@ -142,5 +142,10 @@ return {
 				"--offset-encoding=utf-16",
 			},
 		})
+
+		lspconfig["coq_lsp"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 	end,
 }
