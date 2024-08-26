@@ -23,7 +23,7 @@ return {
 				"mypy",     -- python type checker
 				"ocamlformat", -- ocaml formatter
 				"rustfmt",  -- rust formatter
-				"coq-lsp",  -- coq formatter
+				"coq_lsp",  -- coq formatter
 			},
 		})
 
