@@ -84,3 +84,5 @@ eval "$(rbenv init -)"
 [[ ! -r /Users/yokurang/.opam/opam-init/init.zsh ]] || source /Users/yokurang/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 eval $(opam env)
 
+export PATH="/opt/homebrew/opt/bison/bin:$PATH"
+export PATH="/opt/homebrew/opt/flex/bin:$PATH"
