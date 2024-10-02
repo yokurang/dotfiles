@@ -1,3 +1,4 @@
+
 ;;; init.el --- Complete Emacs configuration for development
 
 ;;; Commentary:
@@ -28,7 +29,51 @@
 (setq use-package-always-ensure t)
 
 ;; Theme
-(load-theme 'misterioso t)
+(use-package dracula-theme
+  :ensure t)
+
+(use-package gruvbox-theme
+  :ensure t)
+
+(use-package solarized-theme
+  :ensure t)
+
+(use-package zenburn-theme
+  :ensure t)
+
+(use-package monokai-theme
+  :ensure t)
+
+(use-package nord-theme
+  :ensure t)
+
+(use-package material-theme
+  :ensure t)
+
+(use-package atom-one-dark-theme
+  :ensure t)
+
+;; Define the list of themes to cycle through
+(defvar my-theme-list
+  '(misterioso dracula gruvbox-dark-medium solarized-dark zenburn
+    monokai nord material atom-one-dark)
+  "List of themes to cycle through.")
+
+;; Function to cycle through themes
+(defun my/cycle-themes ()
+  "Cycle through a list of themes specified in `my-theme-list`."
+  (interactive)
+  (when my-theme-list
+    ;; Disable all active themes
+    (mapc #'disable-theme custom-enabled-themes)
+    ;; Rotate the list and load the first theme
+    (let ((next-theme (pop my-theme-list)))
+      (setq my-theme-list (append my-theme-list (list next-theme)))
+      (load-theme next-theme t)
+      (message "Switched to theme: %s" (symbol-name next-theme)))))
+
+;; Bind the theme cycling function to a key
+(global-set-key (kbd "C-c t h") 'my/cycle-themes)
 
 ;; Evil (Vim keybindings)
 (use-package evil
@@ -235,10 +280,6 @@
   :ensure t
   :hook (prog-mode . rainbow-mode))
 
-;; Markdown mode
-(use-package markdown-mode
-  :ensure t)
-
 ;; Treemacs
 (use-package treemacs
   :ensure t
@@ -266,6 +307,187 @@
   :ensure t
   :config
   (exec-path-from-shell-initialize))
+
+;; Dashboard settings
+(use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-projects-backend 'project-el
+        dashboard-banner-logo-title "Welcome to Emacs Dashboard"
+        dashboard-startup-banner 'official  ;; Display the Emacs logo
+        dashboard-center-content t
+        dashboard-set-footer nil
+        dashboard-page-separator "\n\n\n"
+        dashboard-items '((projects . 15)
+                          (recents  . 15)
+                          (bookmarks . 5)))
+  (dashboard-setup-startup-hook))
+
+(use-package reveal-in-osx-finder
+  :if (memq window-system '(mac ns)))
+
+
+;; Highlight uncommitted changes using VC
+(use-package diff-hl
+  :config
+  (global-diff-hl-mode 1))
+
+
+;; EditorConfig Emacs Plugin
+(use-package editorconfig
+  :config
+  (editorconfig-mode 1))
+
+
+;; Save minibuffer history
+(use-package savehist
+  :ensure nil
+  :init
+  (savehist-mode 1))
+
+;; Enrich existing commands with completion annotations
+(use-package marginalia
+  :init 
+  (marginalia-mode 1))
+
+;; display the definition of word at point
+(use-package define-word
+  :defer t
+  :bind (:map custom-bindings-map ("C-c D" . define-word-at-point)))
+
+;; Insert template words
+(use-package lorem-ipsum)
+
+;; Emacs support library for PDF files
+(use-package pdf-tools
+  :defer t
+  :mode "\\.pdf\\'"
+  :bind (:map pdf-view-mode-map
+              ("c" . (lambda ()
+                       (interactive)
+                       (if header-line-format
+                           (setq header-line-format nil)
+                         (nano-modeline-pdf-mode))))
+              ("j" . pdf-view-next-line-or-next-page)
+              ("k" . pdf-view-previous-line-or-previous-page))
+  :hook (pdf-view-mode
+         . (lambda ()
+             (nano-modeline-pdf-mode)))
+  :init (pdf-loader-install)
+  :config (add-to-list 'revert-without-query ".pdf"))
+
+;; Outline-based notes management and organizer
+(use-package org
+  :defer t
+  :config
+  (setq org-adapt-indentation t
+        org-hide-leading-stars t
+        org-hide-emphasis-markers t
+        org-pretty-entities t
+        org-src-fontify-natively t
+        org-startup-folded t
+        org-edit-src-content-indentation 0))
+
+;; Working with Code Blocks in Org
+(use-package ob
+  :ensure nil
+  :after org
+  :config
+  (setq org-export-use-babel nil
+        ;; Prompt before executing code blocks for security
+        org-confirm-babel-evaluate t)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python     . t)
+     (C          . t)
+     (ocaml      . t)
+     (rust       . t))))
+
+;; Babel Functions for Python
+(use-package ob-python
+  :ensure nil
+  :after (ob python)
+  :config
+  (setq org-babel-python-command python-shell-interpreter))
+
+(setq org-babel-C-compiler "gcc")   ;; For C
+(setq org-babel-C++-compiler "g++") ;; For C++
+
+(use-package ob-rust
+  :ensure t
+  :after org)
+
+(setq org-confirm-babel-evaluate
+      (lambda (lang body)
+        (not (member lang '("python" "C" "C++" "ocaml" "rust" "emacs-lisp")))))
+
+;; Modern looks for Org
+(use-package org-modern
+  :after org
+  :hook (org-mode . org-modern-mode)
+  :config
+  (setq org-modern-block-fringe nil))
+
+(setq org-todo-keywords
+      '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+
+;; Export Github Flavored Markdown from Org
+(use-package ox-gfm
+  :after (org))
+
+(use-package org-present
+  :after center-content-mode
+  :hook ((org-present-mode
+          . (lambda ()
+              (jinx-mode -1)
+              (org-modern-mode -1)
+              (set (make-local-variable 'org-modern-hide-stars) t)
+              (setq cursor-type nil)
+              (org-modern-mode 1)
+              (org-present-big)
+              (org-display-inline-images)
+              (focus-mode 1)
+              (center-content-mode 1)))
+         (org-present-mode-quit
+          . (lambda ()
+              (jinx-mode 1)
+              (org-modern-mode -1)
+              (setq org-modern-hide-stars (default-value 'org-modern-hide-stars))
+              (setq cursor-type (default-value 'cursor-type))
+              (org-modern-mode 1)
+              (focus-mode -1)
+              (center-content-mode -1))))
+  :config
+  (defun org-present-next-item ()
+    (interactive)
+    (unless (re-search-forward "^+" nil t)
+      (org-present-next)))
+
+  (defun org-present-prev-item ()
+    (interactive)
+    (unless (re-search-backward "^+" nil t)
+      (org-present-prev)))
+
+  :bind (:map org-present-mode-keymap
+              ("<next>" . org-present-next-item)
+              ("C-<right>" . org-present-next-item)
+              ("<prior>" . org-present-prev-item)
+              ("C-<left>" . org-present-prev-item)))
+
+;; Emacs Major mode for Markdown-formatted files
+(use-package markdown-mode
+  :defer t
+  :hook (markdown-mode . (lambda () (setq fill-column 72))))
+
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t
+        auto-package-update-hide-results t))
+
+(use-package package-utils
+  :ensure t)
 
 ;; Provide init
 (provide 'init)
