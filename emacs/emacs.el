@@ -1,4 +1,3 @@
-
 ;;; init.el --- Complete Emacs configuration for development
 
 ;;; Commentary:
@@ -498,7 +497,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ocp-indent 0blayout exec-path-from-shell zzz-to-char zygospore zuul yasnippet-snippets xclip which-key web-mode vertico tuareg treesit-auto treemacs-projectile treemacs-magit treemacs-all-the-icons tree-sitter-langs tree-sitter-ispell tree-sitter-indent track-changes tabspaces srefactor sqlite3 skewer-mode shrface rustic rust-playground rtags reason-mode realgud rainbow-mode racer python-mode pytest proof-general pretty-hydra pandoc-mode package-lint-flymake org-appear orderless oauth2 nov nord-theme neotree modern-cpp-font-lock marginalia lsp-ui lsp-pyright lsp-ivy leetcode irony-eldoc ibuffer-project helpful helm-xref helm-lsp helm-gtags git-gutter ghub+ ggtags general function-args forge flycheck-rust flycheck-posframe flycheck-pos-tip flycheck-ocaml flycheck-irony evil-nerd-commenter evil-collection emmet-mode embark-consult elpy elisp-demos ein editorconfig ecb dune dumb-jump dracula-theme disaster denote dap-mode counsel corfu-terminal company-jedi company-irony-c-headers company-irony company-coq company-box cmake-mode cmake-ide clang-format ccls cargo cape calibredb breadcrumb blacken auto-complete all-the-icons-nerd-fonts alert aggressive-indent)))
+   '(ag ocp-indent 0blayout exec-path-from-shell zzz-to-char zygospore zuul yasnippet-snippets xclip which-key web-mode vertico tuareg treesit-auto treemacs-projectile treemacs-magit treemacs-all-the-icons tree-sitter-langs tree-sitter-ispell tree-sitter-indent track-changes tabspaces srefactor sqlite3 skewer-mode shrface rustic rust-playground rtags reason-mode realgud rainbow-mode racer python-mode pytest proof-general pretty-hydra pandoc-mode package-lint-flymake org-appear orderless oauth2 nov nord-theme neotree modern-cpp-font-lock marginalia lsp-ui lsp-pyright lsp-ivy leetcode irony-eldoc ibuffer-project helpful helm-xref helm-lsp helm-gtags git-gutter ghub+ ggtags general function-args forge flycheck-rust flycheck-posframe flycheck-pos-tip flycheck-ocaml flycheck-irony evil-nerd-commenter evil-collection emmet-mode embark-consult elpy elisp-demos ein editorconfig ecb dune dumb-jump dracula-theme disaster denote dap-mode counsel corfu-terminal company-jedi company-irony-c-headers company-irony company-coq company-box cmake-mode cmake-ide clang-format ccls cargo cape calibredb breadcrumb blacken auto-complete all-the-icons-nerd-fonts alert aggressive-indent)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
