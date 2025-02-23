@@ -1,4 +1,17 @@
 " Vim-Plug 
+
+""
+" Installation notes
+" 1. Install Vim-Plug. On a Unix system, the command is:
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+" 2. Add the following lines to your .vimrc file
+" 3. Run :PlugInstall in Vim to install the plugins
+" 4. You may need to install ctags for the tagbar plugin. On an OSX, it is brew install ctags
+" 5. Restart Vim
+""
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'preservim/nerdtree'  " File explorer
