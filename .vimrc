@@ -19,8 +19,14 @@ Plug 'jpalardy/vim-slime' "REPL integration
 Plug 'airblade/vim-gitgutter' " GitGutter
 Plug 'majutsushi/tagbar' " Tagbar
 Plug 'ctrlpvim/ctrlp.vim' " CtrlP
-
+Plug 'junegunn/vim-pseudocl' " Pseudo-color highlighting
+Plug 'junegunn/vim-oblique' " Oblique strategies
+Plug 'junegunn/vim-github-dashboard' " GitHub dashboard
+Plug 'junegunn/vim-emoji' " Emoji support
+Plug 'mzlogin/vim-markdown-toc' " Markdown TOC generator
 Plug 'morhetz/gruvbox'
+Plug 'junegunn/gv.vim' " Git commit browser
+Plug 'junegunn/vim-easy-align' " Easy alignment
 
 call plug#end()
 
@@ -156,3 +162,33 @@ let g:slime_target = "kitty"
 " and/or as a buffer-level override
 " let b:slime_target = "wezterm"
 
+" Emojis
+""" Emojis as GitGutter symbols
+let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
+let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
+let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
+let g:gitgutter_sign_modified_removed = emoji#for('collision')
+
+" EasyAlign
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+"Image Paste
+autocmd FileType markdown,tex nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+" there are some defaults for image directory and image name, you can change them
+" let g:mdip_imgdir = 'img'
+" let g:mdip_imgname = 'image'
+
+function! g:LatexPasteImage(relpath)
+    execute "normal! i\\includegraphics{" . a:relpath . "}\r\\caption{I"
+    let ipos = getcurpos()
+    execute "normal! a" . "mage}"
+    call setpos('.', ipos)
+    execute "normal! ve\<C-g>"
+endfunction
+
+autocmd FileType markdown let g:PasteImageFunction = 'g:MarkdownPasteImage'
+autocmd FileType tex let g:PasteImageFunction = 'g:LatexPasteImage'
