@@ -40,6 +40,7 @@ Plug 'mzlogin/vim-markdown-toc' " Markdown TOC generator
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/gv.vim' " Git commit browser
 Plug 'junegunn/vim-easy-align' " Easy alignment
+Plug 'puremourning/vimspector'
 
 call plug#end()
 
@@ -205,3 +206,25 @@ endfunction
 
 autocmd FileType markdown let g:PasteImageFunction = 'g:MarkdownPasteImage'
 autocmd FileType tex let g:PasteImageFunction = 'g:LatexPasteImage'
+
+" Debugger
+" Enable vimspector
+let g:vimspector_enable_mappings = 'HUMAN'
+
+" Key mappings for debugging
+nnoremap <leader>dd :call vimspector#Launch()<CR>  " Start debugging
+nnoremap <leader>de :call vimspector#Reset()<CR>   " Stop debugging
+nnoremap <leader>dc :call vimspector#Continue()<CR> " Continue execution
+nnoremap <leader>db :call vimspector#ToggleBreakpoint()<CR> " Toggle breakpoint
+nnoremap <leader>dn :call vimspector#StepOver()<CR> " Step over
+nnoremap <leader>di :call vimspector#StepInto()<CR> " Step into
+nnoremap <leader>do :call vimspector#StepOut()<CR> " Step out
+nnoremap <leader>dv :call vimspector#Evaluate()<CR> " Evaluate expression
+
+" Display debug windows
+nnoremap <leader>dw :VimspectorWatch<CR>
+nnoremap <leader>dl :VimspectorShowOutput<CR>
+
+" Automatically open debug windows
+let g:vimspector_install_gadgets = [ 'debugpy', 'CodeLLDB' ]
+
