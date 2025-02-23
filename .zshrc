@@ -86,3 +86,5 @@ eval $(opam env)
 
 export PATH="/opt/homebrew/opt/bison/bin:$PATH"
 export PATH="/opt/homebrew/opt/flex/bin:$PATH"
+export PATH="/opt/homebrew/opt/icu4c@76/bin:$PATH"
+export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
