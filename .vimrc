@@ -41,6 +41,9 @@ Plug 'morhetz/gruvbox'
 Plug 'junegunn/gv.vim' " Git commit browser
 Plug 'junegunn/vim-easy-align' " Easy alignment
 Plug 'puremourning/vimspector'
+Plug 'chrisbra/csv.vim'
+Plug 'elzr/vim-json'
+
 
 call plug#end()
 
@@ -108,8 +111,10 @@ inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 "" Copilot
+""" Default is off
+let g:copilot_enabled = 0
 
-""" Disable default Tab mapping
+"""Disable default Tab mapping
 " let g:copilot_no_tab_map = v:true
 
 """ Map <C-l> to accept Copilot suggestions in Insert mode
@@ -228,3 +233,22 @@ nnoremap <leader>dl :VimspectorShowOutput<CR>
 " Automatically open debug windows
 let g:vimspector_install_gadgets = [ 'debugpy', 'CodeLLDB' ]
 
+" Set colorcolumn for different filetypes
+autocmd FileType python setlocal colorcolumn=79
+autocmd FileType * if &filetype != 'python' | setlocal colorcolumn=80 | endif
+
+" Make the colorcolumn a thin, light grey line
+highlight ColorColumn ctermbg=lightgrey guibg=#ECECEC
+
+" Launch Preview (OSX) when Vim opens a PNG file
+autocmd BufReadPost *.png,*.jpg,*.jpeg,*.gif silent !open -a Preview "%:p" &
+
+" Enable JSON filetype detection
+autocmd BufRead,BufNewFile *.json set filetype=json
+
+" vim-json settings
+autocmd FileType json setlocal conceallevel=0    " Disable concealing (default hides quotes)
+autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab  " Enforce 2-space indent
+
+let g:vim_json_syntax_conceal = 0  " Disable syntax concealing
+let g:vim_json_conceal = 0         " Ensure JSON keys and values are fully visible
