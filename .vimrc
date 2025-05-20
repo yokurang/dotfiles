@@ -14,6 +14,9 @@
 
 call plug#begin('~/.vim/plugged')
 
+" --- put this above Plug 'jiangmiao/auto-pairs' ---
+let g:AutoPairsMapCR = 0
+
 Plug 'preservim/nerdtree'  " File explorer
 Plug 'tpope/vim-surround'  " Better text editing
 Plug 'jiangmiao/auto-pairs' " Auto close brackets and quotes
@@ -106,19 +109,17 @@ let g:coc_global_extensions = [
 \ 'coc-yaml',
 \ ]
 
-""" (Optional) Example: Use <Tab> for completion when popup menu is visible
-inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
 "" Copilot
 """ Default is off
 let g:copilot_enabled = 0
 
-"""Disable default Tab mapping
-" let g:copilot_no_tab_map = v:true
+" Prevent Copilot from mapping Tab by default
+let g:copilot_no_tab_map = v:true
 
-""" Map <C-l> to accept Copilot suggestions in Insert mode
-" inoremap <silent><script><expr> <C-l> copilot#Accept("\<CR>")
+" Use Tab to accept Copilot suggestion (only if it's visible)
+imap <silent><script><expr> <Tab> copilot#Accept("\<Tab>")
 
 "" VimWiki
 """ Keep markdown notes in ~/vimwiki
@@ -132,7 +133,6 @@ set updatetime=100 " Faster git updates
 
 "" Tagbar
 nnoremap <leader>tb :TagbarToggle<CR>
-
 "" CtrlP
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -183,10 +183,10 @@ let g:slime_target = "kitty"
 
 " Emojis
 """ Emojis as GitGutter symbols
-let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
-let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
-let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
-let g:gitgutter_sign_modified_removed = emoji#for('collision')
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '~'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_modified_removed = '≠'  " Not equal = modified & removed
 
 " EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -252,3 +252,8 @@ autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab  " Enforce 2-spa
 
 let g:vim_json_syntax_conceal = 0  " Disable syntax concealing
 let g:vim_json_conceal = 0         " Ensure JSON keys and values are fully visible
+
+" Opam Settings
+set rtp^="/Users/yokurang/.opam/default/share/ocp-indent/vimr"
+let g:opamshare = substitute(system('opam var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"

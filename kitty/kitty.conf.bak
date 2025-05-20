@@ -92,6 +92,6 @@ allow_hyperlinks yes
 term xterm-kitty
 
 # BEGIN_KITTY_THEME
-# Gruvbox Dark
+# Catppuccin-Mocha
 include current-theme.conf
 # END_KITTY_THEME
