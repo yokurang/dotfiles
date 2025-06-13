@@ -12,6 +12,8 @@
 " 5. Restart Vim
 ""
 
+let mapleader = " "
+
 call plug#begin('~/.vim/plugged')
 
 " --- put this above Plug 'jiangmiao/auto-pairs' ---
@@ -46,6 +48,7 @@ Plug 'junegunn/vim-easy-align' " Easy alignment
 Plug 'puremourning/vimspector'
 Plug 'chrisbra/csv.vim'
 Plug 'elzr/vim-json'
+Plug 'mhinz/vim-startify'
 
 
 call plug#end()
@@ -53,7 +56,7 @@ call plug#end()
 " Plugin Settings
 
 "" NERDTree
-nnoremap <leader>te :NERDTreeToggle<CR>
+nnoremap <leader>ee :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen=1
 
 "" Window Navigation
@@ -142,30 +145,47 @@ colorscheme gruvbox
 set background=dark
 
 " Basic Settings 
-set nocompatible " Prevents bugs 
-set number " Line numbers
-set relativenumber "Relative line numbers
-set autoindent " Enable auto-indent 
-set smartindent " Reacts to syntax 
-set tabstop=4 " Number of spaces in a tab 
-set shiftwidth=4 " Number of spaces for auto-indent 
-set expandtab " Set tabs to spaces 
-set cursorline " Highlight current line
-set wrap " Enable line wrapping
-set ignorecase " Case-insensitive search 
-set smartcase " Case sensitive when search starts with an uppercase 
-set incsearch " Show search matches as you type 
-set hlsearch " Highlight all search matches 
-set mouse=a " Enable mouse support
+syntax on
+filetype plugin indent on
+set nocompatible         " Make Vim not behave like the original Vi
+set encoding=utf-8       " Set UTF-8 encoding
+
+" Line Numbers
+set number               " Show line numbers
+set relativenumber       " Show relative numbers
+set ruler                " Show cursor position
+
+" Tabs & Indentation
+set expandtab            " Convert tabs to spaces
+set smarttab             " Enable smart tab
+set autoindent           " Auto-indent new lines
+set smartindent          " Smarter auto-indenting
+set tabstop=4            " Show tabs as 4 spaces
+set shiftwidth=4         " Auto-indent uses 4 spaces
+
+" Wrapping & Scrolling
+set wrap                 " Wrap long lines
+set linebreak            " Wrap lines at convenient points
+
+" Search Behavior
+set ignorecase           " Case-insensitive search...
+set smartcase            " ...unless uppercase used
+set incsearch            " Show matches as you type
+set hlsearch             " Highlight search results
+
+" Clipboard & Mouse
 set clipboard=unnamed " Use system clipboard
-set backspace=indent,eol,start " Better backspacing
-set encoding=utf-8 "Set encoding
-set ruler " Better cursor 
-set autowrite " Automatically save file changes
-set smarttab " Smart tabbing
-set spell " Spelling
-set title 
-set showcmd "Show leader key 
+set mouse=a               " Enable mouse support
+
+" Quality-of-life
+set backspace=indent,eol,start
+set cursorline            " Highlight current line
+set autowrite             " Auto-save before certain actions
+set title                 " Show title in window
+set showcmd               " Show typed command in status bar
+set spell                 " Enable spellcheck
+set history=50            " Command history size
+set matchtime=2           " Show matching parens for 0.2s
 
 " Coding experience
 set history=50
@@ -248,7 +268,7 @@ autocmd BufRead,BufNewFile *.json set filetype=json
 
 " vim-json settings
 autocmd FileType json setlocal conceallevel=0    " Disable concealing (default hides quotes)
-autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab  " Enforce 2-space indent
+autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab
 
 let g:vim_json_syntax_conceal = 0  " Disable syntax concealing
 let g:vim_json_conceal = 0         " Ensure JSON keys and values are fully visible
@@ -257,3 +277,40 @@ let g:vim_json_conceal = 0         " Ensure JSON keys and values are fully visib
 set rtp^="/Users/yokurang/.opam/default/share/ocp-indent/vimr"
 let g:opamshare = substitute(system('opam var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
+
+" Terminal Settings
+
+nnoremap <leader>tr :terminal<CR>
+
+let g:startify_lists = [
+    \ { 'type': 'files',     'header': ['   Recent Files']       },
+    \ { 'type': 'dir',       'header': ['   Files in Current Dir'] },
+    \ { 'type': 'sessions',  'header': ['   Sessions']           },
+    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']          },
+    \ { 'type': 'commands',  'header': ['   Commands']           },
+    \ ]
+let g:startify_session_autoload = 1
+let g:startify_session_delete_buffers = 1
+let g:startify_change_to_vcs_root = 1
+let g:startify_bookmarks = [
+  \ { 'c': '~/.vimrc' },
+  \ { 'z': '~/vimwiki/index.md' },
+  \ ]
+
+let g:startify_custom_header = [
+\ '           .--.         .---.        .-.      ',
+\ '      .-(    ).     .-(     ).    .-(   ).    ',
+\ '     (___.__)__)   (___.__)__)  (___.__)__)   ',
+\ '     ´´´´´´´´´´´   ´´´´´´´´´´´  ´´´´´´´´´´´    ',
+\ '       ´´´´´´´´´´´  ´´´´´´´´´´´   ´´´´´´´´´´   ',
+\ '        ´´´´´´´´´    ´´´´´´´´´     ´´´´´´´     ',
+\ '                                               ',
+\ '      /\\           /\\        /\\    /\\      ',
+\ '     /  \\    /\\  /  \\  /\\  /  \\  /  \\     ',
+\ '    /    \\  /  \\/    \\/  \\/    \\/    \\    ',
+\ '   /      \\/                    /      \\   ',
+\ '  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    ',
+\ '   ~    ~    ~   ~   ~   ~   ~   ~   ~   ~     ',
+\ ' ~    ~   ~    ~   ~   ~    ~  ~  ~    ~   ~   ',
+\ ]
+
