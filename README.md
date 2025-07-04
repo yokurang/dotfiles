@@ -4,10 +4,10 @@ This repository contains my configuration files. To set up my configurations on 
 
 ```bash
 ln -s ~/dotfiles/.zshrc ~/.zshrc
-ln -s ~/dotfiles/nvim ~/.config/nvim
+ln -s ~/dotfiles/vim ~/.config/nvim
 ln -s ~/dotfiles/tmux ~/.config
-ln -s ~/dotfiles/wezterm ~/.config
 ln -s ~/dotfiles/kitty ~/.config
+ln -s ~/dotfiles/emacs ~/.emacs.d
 ```
 
 To use `tmux`, remember to install the packages using
