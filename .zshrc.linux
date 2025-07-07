@@ -33,4 +33,5 @@ fi
 
 # .NET
 export DOTNET_ROOT="/usr/share/dotnet"
-export PATH="$DOTNET_ROOT:$PATH"
+export PATH="$HOME/.dotnet/tools:$DOTNET_ROOT:$PATH"
+

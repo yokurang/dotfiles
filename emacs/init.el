@@ -5,6 +5,7 @@
 ;; Treemacs, Vim keybindings, and language-specific setups for OCaml, Coq, Rust, C++, and Python.
 
 ;;; Code:
+(load "~/.emacs.d/init.el")
 
 ;; Basic Emacs Configurations
 (setq inhibit-startup-message t)
@@ -78,6 +79,7 @@
          (rust-mode . lsp)
          (python-mode . lsp)
          (tuareg-mode . lsp)
+         (csharp-mode  . lsp)
          (coq-mode . lsp)) 
   :commands lsp
   :custom
@@ -148,6 +150,27 @@
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
                          (lsp))))
+
+;; C# / .NET Development
+;; ensure your global .NET tools (~/.dotnet/tools) are on Emacs’s exec-path
+(let ((dotnet-tools (expand-file-name "~/.dotnet/tools")))
+  (when (file-directory-p dotnet-tools)
+    (add-to-list 'exec-path dotnet-tools)))
+
+(use-package csharp-mode
+  :ensure t
+  :mode "\\.cs\\'"
+  :hook (csharp-mode . lsp))
+
+(use-package omnisharp
+  :ensure t
+  :after csharp-mode
+  :hook (csharp-mode . omnisharp-mode)
+  :config
+  ;; look for "omnisharp" on your PATH (installed via `dotnet tool install -g dotnet-omnisharp`)
+  (setq omnisharp-server-executable-path
+        (or (executable-find "omnisharp")
+            (error "Couldn’t find `omnisharp` in your PATH; install with `dotnet tool install -g dotnet-omnisharp`"))))
 
 ;; Auto-format Python code on save
 (use-package blacken
@@ -475,7 +498,6 @@
 ;; ───── JuliaMono font (if installed) ─────────────────────────────────────
 (when (member "JuliaMono" (font-family-list))
   (set-face-attribute 'default nil :family "JuliaMono" :height 120))
-
 
 ;; Provide init
 (provide 'init)

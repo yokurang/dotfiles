@@ -46,5 +46,5 @@ export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
 
 # C#
 export DOTNET_ROOT="/opt/homebrew/share/dotnet"
-export PATH="$DOTNET_ROOT:$PATH"
+export PATH="$HOME/.dotnet/tools:$DOTNET_ROOT:$PATH"
 
