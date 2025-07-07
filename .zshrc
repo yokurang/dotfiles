@@ -6,17 +6,12 @@ fi
 # Set the path to the oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Load NVM
-[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh
-
 # Set Zsh theme to Powerlevel10k
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set the Zsh plugins
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search)
 source $ZSH/oh-my-zsh.sh
-
-# User Configuration
 
 # Rust configuration
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -47,4 +42,9 @@ export PATH="/opt/homebrew/opt/bison/bin:$PATH"
 export PATH="/opt/homebrew/opt/flex/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c@76/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
+
+
+# C#
+export DOTNET_ROOT="/opt/homebrew/share/dotnet"
+export PATH="$DOTNET_ROOT:$PATH"
 

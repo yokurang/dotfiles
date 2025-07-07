@@ -12,9 +12,6 @@
 (show-paren-mode t)
 (global-display-line-numbers-mode)
 
-;; Suppress warnings below the error level
-(setq warning-minimum-level :error)
-
 ;; Package Management
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -73,19 +70,6 @@
 
 ;; Bind the theme cycling function to a key
 (global-set-key (kbd "C-c t h") 'my/cycle-themes)
-
-;; Evil (Vim keybindings)
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1))
-
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
 
 ;; LSP Mode
 (use-package lsp-mode
@@ -487,6 +471,11 @@
 
 (use-package package-utils
   :ensure t)
+
+;; ───── JuliaMono font (if installed) ─────────────────────────────────────
+(when (member "JuliaMono" (font-family-list))
+  (set-face-attribute 'default nil :family "JuliaMono" :height 120))
+
 
 ;; Provide init
 (provide 'init)

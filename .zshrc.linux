@@ -1,0 +1,36 @@
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  web-search
+)
+source "$ZSH/oh-my-zsh.sh"
+
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# C/C++ toolchain
+export CC=gcc
+export CXX=g++
+
+# Python support
+export PATH="$HOME/.local/bin:$PATH"
+
+# Make python point to python3, pip to pip3
+alias python=python3
+alias pip=pip3
+
+# OCaml / Opam
+if [[ -r "$HOME/.opam/opam-init/init.zsh" ]]; then
+  source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2>&1
+fi
+
+# .NET
+export DOTNET_ROOT="/usr/share/dotnet"
+export PATH="$DOTNET_ROOT:$PATH"

@@ -12,7 +12,7 @@
 " 5. Restart Vim
 ""
 
-let mapleader = " "
+let g:mapleader = "\<Space>"
 
 call plug#begin('~/.vim/plugged')
 
@@ -48,14 +48,24 @@ Plug 'junegunn/vim-easy-align' " Easy alignment
 Plug 'puremourning/vimspector'
 Plug 'chrisbra/csv.vim'
 Plug 'elzr/vim-json'
+Plug 'liuchengxu/vim-which-key'
 Plug 'mhinz/vim-startify'
+Plug 'mbbill/undotree'
 
 
 call plug#end()
 
 " Plugin Settings
 
-"" NERDTree
+" UndoTree
+set undofile
+if !isdirectory(expand('~/.vim/undodir'))
+  call mkdir(expand('~/.vim/undodir'), 'p')
+endif
+set undodir=~/.vim/undodir
+nnoremap <leader>u :UndotreeToggle<CR>
+
+" NERDTree
 nnoremap <leader>ee :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen=1
 
@@ -314,3 +324,64 @@ let g:startify_custom_header = [
 \ ' ~    ~   ~    ~   ~   ~    ~  ~  ~    ~   ~   ',
 \ ]
 
+let g:which_key_map = {}
+let g:which_key_map['w'] = {
+      \ 'name' : '+windows' ,
+      \ 'w' : ['<C-W>w'     , 'other-window']          ,
+      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
+      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
+      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
+      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
+      \ 'h' : ['<C-W>h'     , 'window-left']           ,
+      \ 'j' : ['<C-W>j'     , 'window-below']          ,
+      \ 'l' : ['<C-W>l'     , 'window-right']          ,
+      \ 'k' : ['<C-W>k'     , 'window-up']             ,
+      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
+      \ 'J' : [':resize +5'  , 'expand-window-below']   ,
+      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
+      \ 'K' : [':resize -5'  , 'expand-window-up']      ,
+      \ '=' : ['<C-W>='     , 'balance-window']        ,
+      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
+      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
+      \ '?' : ['Windows'    , 'fzf-window']            ,
+      \ }
+
+set timeoutlen=500
+let g:maplocalleader = ','
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+
+" vim-slime (REPL send)
+nnoremap <silent> <leader>sl <Plug>SlimeLineSend     " send current line
+vnoremap <silent> <leader>sr <Plug>SlimeRegionSend   " send visual selection
+
+" vim-gitgutter (hunk navigation & staging)
+nnoremap <silent> ]h :GitGutterNextHunk<CR>
+nnoremap <silent> [h :GitGutterPrevHunk<CR>
+nnoremap <silent> <leader>hs :GitGutterStageHunk<CR>
+nnoremap <silent> <leader>hu :GitGutterUndoHunk<CR>
+
+" vim-oblique (Oblique Strategies)
+nnoremap <silent> <leader>ob :Oblique<CR>
+
+" vim-github-dashboard
+nnoremap <silent> <leader>gh :GitHubDashboard<CR>
+
+" vim-emoji
+nnoremap <silent> <leader>ei :Emoji<CR>
+
+" markdown-toc
+nnoremap <silent> <leader>mt :GenTocGFM<CR>
+
+" gv.vim (Git commit browser)
+nnoremap <silent> <leader>gv :GV<CR>
+
+" csv.vim
+nnoremap <silent> <leader>co :CSVOpen<CR>
+nnoremap <silent> <leader>ca :CSVAlign<CR>
+
+" JSON formatting (requires `jq` installed)
+autocmd FileType json nnoremap <buffer> <silent> <leader>jf :%!jq .<CR>
+
+" vim-startify
+nnoremap <silent> <leader>as :Startify<CR>
