@@ -1,387 +1,305 @@
-" Vim-Plug 
-
-""
-" Installation notes
-" 1. Install Vim-Plug. On a Unix system, the command is:
-" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-"  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-" 2. Add the following lines to your .vimrc file
-" 3. Run :PlugInstall in Vim to install the plugins
-" 4. You may need to install ctags for the tagbar plugin. On an OSX, it is brew install ctags
-" 5. Restart Vim
-""
+" Installation:
+" 1. Install Vim-Plug:
+"    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" 2. Copy this file to ~/.vimrc
+" 3. Run :PlugInstall in Vim
+" 4. Restart Vim
 
 let g:mapleader = "\<Space>"
 
+" ============================================================================
+" Plugin Management
+" ============================================================================
+
 call plug#begin('~/.vim/plugged')
 
-" --- put this above Plug 'jiangmiao/auto-pairs' ---
-let g:AutoPairsMapCR = 0
+" Core Functionality
+Plug 'preservim/nerdtree'                                " File explorer
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " Fuzzy finder
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-commentary'                              " Comment toggling
+Plug 'tpope/vim-surround'                                " Surround text objects
+Plug 'jiangmiao/auto-pairs'                              " Auto-close brackets
 
-Plug 'preservim/nerdtree'  " File explorer
-Plug 'tpope/vim-surround'  " Better text editing
-Plug 'jiangmiao/auto-pairs' " Auto close brackets and quotes
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy finder
-Plug 'junegunn/fzf.vim'    " Integration for fuzzy finder
-Plug 'tpope/vim-commentary' " Toggle comments easily
-Plug 'vim-airline/vim-airline' " Status bar
-Plug 'sheerun/vim-polyglot' " Syntax highlighting for many languages
-Plug 'tpope/vim-fugitive' " Git Integration
-Plug 'dense-analysis/ale' " Linting and formatting
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
-Plug 'github/copilot.vim' " Copilot
-Plug 'vimwiki/vimwiki' "Notes and documentation
-Plug 'luochen1990/rainbow'
-Plug 'jpalardy/vim-slime' "REPL integration
-Plug 'airblade/vim-gitgutter' " GitGutter
-Plug 'majutsushi/tagbar' " Tagbar
-Plug 'ctrlpvim/ctrlp.vim' " CtrlP
-Plug 'junegunn/vim-pseudocl' " Pseudo-color highlighting
-Plug 'junegunn/vim-oblique' " Oblique strategies
-Plug 'junegunn/vim-github-dashboard' " GitHub dashboard
-Plug 'junegunn/vim-emoji' " Emoji support
-Plug 'mzlogin/vim-markdown-toc' " Markdown TOC generator
-Plug 'morhetz/gruvbox'
-Plug 'junegunn/gv.vim' " Git commit browser
-Plug 'junegunn/vim-easy-align' " Easy alignment
-Plug 'puremourning/vimspector'
-Plug 'chrisbra/csv.vim'
-Plug 'elzr/vim-json'
-Plug 'liuchengxu/vim-which-key'
-Plug 'mhinz/vim-startify'
-Plug 'mbbill/undotree'
+" Development Tools
+Plug 'neoclide/coc.nvim', {'branch': 'release'}         " LSP (intellisense)
+Plug 'dense-analysis/ale'                                " Linting & formatting
+Plug 'tpope/vim-fugitive'                                " Git integration
+Plug 'airblade/vim-gitgutter'                            " Git diff markers
+Plug 'github/copilot.vim'                                " AI pair programming
 
+" UI Enhancement
+Plug 'vim-airline/vim-airline'                           " Status bar
+Plug 'morhetz/gruvbox'                                   " Color scheme
+
+" Language Support
+Plug 'sheerun/vim-polyglot'                              " Syntax highlighting
 
 call plug#end()
 
-" Plugin Settings
+" ============================================================================
+" Plugin Configuration
+" ============================================================================
 
-" UndoTree
+" NERDTree
+nnoremap <leader>e :NERDTreeToggle<CR>
+let NERDTreeQuitOnOpen = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeShowHidden = 1
+
+" FZF
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>g :Rg<CR>
+let g:fzf_layout = { 'down': '40%' }
+
+" ALE - Linting and Formatting
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_fix_on_save = 1
+
+let g:ale_linters = {
+\   'python': ['ruff', 'mypy'],
+\   'rust': ['cargo', 'analyzer'],
+\   'cpp': ['clangd'],
+\}
+
+let g:ale_fixers = {
+\   'python': ['ruff', 'black'],
+\   'rust': ['rustfmt'],
+\   'cpp': ['clang-format'],
+\}
+
+" Navigate errors
+nmap <silent> [e <Plug>(ale_previous_wrap)
+nmap <silent> ]e <Plug>(ale_next_wrap)
+
+" CoC - Language Server Protocol
+let g:coc_global_extensions = [
+\ 'coc-pyright',
+\ 'coc-rust-analyzer',
+\ 'coc-clangd',
+\ 'coc-json',
+\]
+
+" Tab completion
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Accept completion
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" GoTo code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Show documentation
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Rename symbol
+nmap <leader>rn <Plug>(coc-rename)
+
+" Format code
+nmap <leader>cf <Plug>(coc-format)
+
+" Code actions
+nmap <leader>ca <Plug>(coc-codeaction-cursor)
+vmap <leader>ca <Plug>(coc-codeaction-selected)
+
+" GitHub Copilot
+let g:copilot_enabled = 1
+let g:copilot_no_tab_map = v:true
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+imap <C-\> <Plug>(copilot-next)
+
+" Git Integration
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>gp :Git push<CR>
+nnoremap <leader>gl :Git log<CR>
+nnoremap <leader>gd :Gdiffsplit<CR>
+
+" GitGutter
+let g:gitgutter_enabled = 1
+set updatetime=100
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
+nmap <leader>hp <Plug>(GitGutterPreviewHunk)
+nmap <leader>hs <Plug>(GitGutterStageHunk)
+nmap <leader>hu <Plug>(GitGutterUndoHunk)
+
+" Color Scheme
+colorscheme gruvbox
+set background=dark
+
+" Auto-pairs
+let g:AutoPairsMapCR = 0
+
+" ============================================================================
+" Core Settings
+" ============================================================================
+
+" Display
+syntax on
+set number relativenumber
+set ruler
+set cursorline
+set showcmd
+set laststatus=2
+set title
+set wrap linebreak
+set scrolloff=8
+set signcolumn=yes
+
+" Encoding
+set encoding=utf-8
+set fileencoding=utf-8
+
+" Indentation
+filetype plugin indent on
+set expandtab
+set smarttab
+set autoindent
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+
+" Search
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+nnoremap <leader>h :nohlsearch<CR>
+
+" Editing
+set backspace=indent,eol,start
+set clipboard=unnamed
+set mouse=a
+set autowrite
+set hidden
+
+" Performance
+set lazyredraw
+set ttyfast
+
+" Backup and Undo
+set nobackup
+set nowritebackup
+set noswapfile
 set undofile
+set undodir=~/.vim/undodir
 if !isdirectory(expand('~/.vim/undodir'))
   call mkdir(expand('~/.vim/undodir'), 'p')
 endif
-set undodir=~/.vim/undodir
-nnoremap <leader>u :UndotreeToggle<CR>
 
-" NERDTree
-nnoremap <leader>ee :NERDTreeToggle<CR>
-let NERDTreeQuitOnOpen=1
+" Completion
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
 
-"" Window Navigation
+" ============================================================================
+" Language-Specific Settings
+" ============================================================================
+
+" Python
+autocmd FileType python setlocal colorcolumn=88
+autocmd FileType python setlocal textwidth=88
+
+" Rust
+autocmd FileType rust setlocal colorcolumn=100
+autocmd FileType rust setlocal textwidth=100
+
+" C++
+autocmd FileType cpp setlocal colorcolumn=80
+autocmd FileType cpp setlocal textwidth=80
+autocmd FileType cpp setlocal commentstring=//\ %s
+
+" ============================================================================
+" Key Mappings
+" ============================================================================
+
+" Window Navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-"" Terminal Navigation
-nnoremap <leader>tt :terminal<CR>
+" Window Management
+nnoremap <leader>ws :split<CR>
+nnoremap <leader>wv :vsplit<CR>
+nnoremap <leader>wc :close<CR>
+nnoremap <leader>wo :only<CR>
 
+" Buffer Management
+nnoremap <leader>bn :bnext<CR>
+nnoremap <leader>bp :bprevious<CR>
+nnoremap <leader>bd :bdelete<CR>
 
-"" Fuzzy Find File Search
-nnoremap <leader>fs :Files<CR>
+" Terminal
+nnoremap <leader>t :terminal<CR>
+tnoremap <Esc> <C-\><C-n>
 
-"" ALE Configurations
-""" Lint only with explicitly configured linters
-let g:ale_linters_explicit = 1
+" Quick Save
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>x :x<CR>
 
-""" Run linting on save (disable if you want to lint more frequently)
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'never'
+" Move lines
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
 
-""" Configure linters for each language
-let g:ale_linters = {
-\   'python': ['flake8'],
-\   'cpp': ['clangtidy'],
-\   'rust': ['cargo'],
-\   'ocaml': ['merlin'],
-\   'sh': ['shellcheck'],
-\}
+" Better indentation
+vnoremap < <gv
+vnoremap > >gv
 
-""" Configure fixers (formatters)
-let g:ale_fixers = {
-\   'python': ['black'],
-\   'cpp': ['clang-format'],
-\   'rust': ['rustfmt'],
-\   'ocaml': ['ocamlformat'],
-\   'sh': ['shfmt'],
-\}
+" ============================================================================
+" Performance Optimizations
+" ============================================================================
 
-" Auto-fix (format) on save
-let g:ale_fix_on_save = 1
+" Disable unused built-in plugins
+let g:loaded_gzip = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+let g:loaded_getscript = 1
+let g:loaded_getscriptPlugin = 1
+let g:loaded_vimball = 1
+let g:loaded_vimballPlugin = 1
+let g:loaded_2html_plugin = 1
+let g:loaded_matchit = 1
+let g:loaded_matchparen = 1
+let g:loaded_logiPat = 1
+let g:loaded_rrhelper = 1
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
 
-"" CoC Configurations
-""" Global extensions for your languages
-let g:coc_global_extensions = [
-\ 'coc-pyright',
-\ 'coc-clangd',
-\ 'coc-rust-analyzer',
-\ 'coc-sh',
-\ 'coc-json',
-\ 'coc-yaml',
-\ ]
+" ============================================================================
+" Status Line (if airline is slow, use this instead)
+" ============================================================================
 
-inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-
-"" Copilot
-""" Default is off
-let g:copilot_enabled = 0
-
-" Prevent Copilot from mapping Tab by default
-let g:copilot_no_tab_map = v:true
-
-" Use Tab to accept Copilot suggestion (only if it's visible)
-imap <silent><script><expr> <Tab> copilot#Accept("\<Tab>")
-
-"" VimWiki
-""" Keep markdown notes in ~/vimwiki
-let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
-
-"" GitGutter
-let g:gitgutter_enabled = 1
-let g:gitgutter_signs = 1
-let g:gitgutter_highlight_lines = 0
-set updatetime=100 " Faster git updates
-
-"" Tagbar
-nnoremap <leader>tb :TagbarToggle<CR>
-"" CtrlP
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
-"" Colorscheme
-colorscheme gruvbox
-set background=dark
-
-" Basic Settings 
-syntax on
-filetype plugin indent on
-set nocompatible         " Make Vim not behave like the original Vi
-set encoding=utf-8       " Set UTF-8 encoding
-
-" Line Numbers
-set number               " Show line numbers
-set relativenumber       " Show relative numbers
-set ruler                " Show cursor position
-
-" Tabs & Indentation
-set expandtab            " Convert tabs to spaces
-set smarttab             " Enable smart tab
-set autoindent           " Auto-indent new lines
-set smartindent          " Smarter auto-indenting
-set tabstop=4            " Show tabs as 4 spaces
-set shiftwidth=4         " Auto-indent uses 4 spaces
-
-" Wrapping & Scrolling
-set wrap                 " Wrap long lines
-set linebreak            " Wrap lines at convenient points
-
-" Search Behavior
-set ignorecase           " Case-insensitive search...
-set smartcase            " ...unless uppercase used
-set incsearch            " Show matches as you type
-set hlsearch             " Highlight search results
-
-" Clipboard & Mouse
-set clipboard=unnamed " Use system clipboard
-set mouse=a               " Enable mouse support
-
-" Quality-of-life
-set backspace=indent,eol,start
-set cursorline            " Highlight current line
-set autowrite             " Auto-save before certain actions
-set title                 " Show title in window
-set showcmd               " Show typed command in status bar
-set spell                 " Enable spellcheck
-set history=50            " Command history size
-set matchtime=2           " Show matching parens for 0.2s
-
-" Coding experience
-set history=50
-set matchtime=2
-
-syntax enable
-filetype plugin indent on
-filetype indent on
-let g:rainbow_active = 1
-" for all buffers
-let g:slime_target = "kitty"
-
-" and/or as a buffer-level override
-" let b:slime_target = "wezterm"
-
-" Emojis
-""" Emojis as GitGutter symbols
-let g:gitgutter_sign_added = '+'
-let g:gitgutter_sign_modified = '~'
-let g:gitgutter_sign_removed = '-'
-let g:gitgutter_sign_modified_removed = '≠'  " Not equal = modified & removed
-
-" EasyAlign
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-"Image Paste
-autocmd FileType markdown,tex nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-" there are some defaults for image directory and image name, you can change them
-" let g:mdip_imgdir = 'img'
-" let g:mdip_imgname = 'image'
-
-function! g:LatexPasteImage(relpath)
-    execute "normal! i\\includegraphics{" . a:relpath . "}\r\\caption{I"
-    let ipos = getcurpos()
-    execute "normal! a" . "mage}"
-    call setpos('.', ipos)
-    execute "normal! ve\<C-g>"
-endfunction
-
-autocmd FileType markdown let g:PasteImageFunction = 'g:MarkdownPasteImage'
-autocmd FileType tex let g:PasteImageFunction = 'g:LatexPasteImage'
-
-" Debugger
-" Enable vimspector
-let g:vimspector_enable_mappings = 'HUMAN'
-
-" Key mappings for debugging
-nnoremap <leader>dd :call vimspector#Launch()<CR>  " Start debugging
-nnoremap <leader>de :call vimspector#Reset()<CR>   " Stop debugging
-nnoremap <leader>dc :call vimspector#Continue()<CR> " Continue execution
-nnoremap <leader>db :call vimspector#ToggleBreakpoint()<CR> " Toggle breakpoint
-nnoremap <leader>dn :call vimspector#StepOver()<CR> " Step over
-nnoremap <leader>di :call vimspector#StepInto()<CR> " Step into
-nnoremap <leader>do :call vimspector#StepOut()<CR> " Step out
-nnoremap <leader>dv :call vimspector#Evaluate()<CR> " Evaluate expression
-
-" Display debug windows
-nnoremap <leader>dw :VimspectorWatch<CR>
-nnoremap <leader>dl :VimspectorShowOutput<CR>
-
-" Automatically open debug windows
-let g:vimspector_install_gadgets = [ 'debugpy', 'CodeLLDB' ]
-
-" Set colorcolumn for different filetypes
-autocmd FileType python setlocal colorcolumn=79
-autocmd FileType * if &filetype != 'python' | setlocal colorcolumn=80 | endif
-
-" Make the colorcolumn a thin, light grey line
-highlight ColorColumn ctermbg=lightgrey guibg=#ECECEC
-
-" Launch Preview (OSX) when Vim opens a PNG file
-autocmd BufReadPost *.png,*.jpg,*.jpeg,*.gif silent !open -a Preview "%:p" &
-
-" Enable JSON filetype detection
-autocmd BufRead,BufNewFile *.json set filetype=json
-
-" vim-json settings
-autocmd FileType json setlocal conceallevel=0    " Disable concealing (default hides quotes)
-autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab
-
-let g:vim_json_syntax_conceal = 0  " Disable syntax concealing
-let g:vim_json_conceal = 0         " Ensure JSON keys and values are fully visible
-
-" Opam Settings
-set rtp^="/Users/yokurang/.opam/default/share/ocp-indent/vimr"
-let g:opamshare = substitute(system('opam var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-
-" Terminal Settings
-
-nnoremap <leader>tr :terminal<CR>
-
-let g:startify_lists = [
-    \ { 'type': 'files',     'header': ['   Recent Files']       },
-    \ { 'type': 'dir',       'header': ['   Files in Current Dir'] },
-    \ { 'type': 'sessions',  'header': ['   Sessions']           },
-    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']          },
-    \ { 'type': 'commands',  'header': ['   Commands']           },
-    \ ]
-let g:startify_session_autoload = 1
-let g:startify_session_delete_buffers = 1
-let g:startify_change_to_vcs_root = 1
-let g:startify_bookmarks = [
-  \ { 'c': '~/.vimrc' },
-  \ { 'z': '~/vimwiki/index.md' },
-  \ ]
-
-let g:startify_custom_header = [
-\ '           .--.         .---.        .-.      ',
-\ '      .-(    ).     .-(     ).    .-(   ).    ',
-\ '     (___.__)__)   (___.__)__)  (___.__)__)   ',
-\ '     ´´´´´´´´´´´   ´´´´´´´´´´´  ´´´´´´´´´´´    ',
-\ '       ´´´´´´´´´´´  ´´´´´´´´´´´   ´´´´´´´´´´   ',
-\ '        ´´´´´´´´´    ´´´´´´´´´     ´´´´´´´     ',
-\ '                                               ',
-\ '      /\\           /\\        /\\    /\\      ',
-\ '     /  \\    /\\  /  \\  /\\  /  \\  /  \\     ',
-\ '    /    \\  /  \\/    \\/  \\/    \\/    \\    ',
-\ '   /      \\/                    /      \\   ',
-\ '  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    ',
-\ '   ~    ~    ~   ~   ~   ~   ~   ~   ~   ~     ',
-\ ' ~    ~   ~    ~   ~   ~    ~  ~  ~    ~   ~   ',
-\ ]
-
-let g:which_key_map = {}
-let g:which_key_map['w'] = {
-      \ 'name' : '+windows' ,
-      \ 'w' : ['<C-W>w'     , 'other-window']          ,
-      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
-      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
-      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
-      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
-      \ 'h' : ['<C-W>h'     , 'window-left']           ,
-      \ 'j' : ['<C-W>j'     , 'window-below']          ,
-      \ 'l' : ['<C-W>l'     , 'window-right']          ,
-      \ 'k' : ['<C-W>k'     , 'window-up']             ,
-      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
-      \ 'J' : [':resize +5'  , 'expand-window-below']   ,
-      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
-      \ 'K' : [':resize -5'  , 'expand-window-up']      ,
-      \ '=' : ['<C-W>='     , 'balance-window']        ,
-      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
-      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
-      \ '?' : ['Windows'    , 'fzf-window']            ,
-      \ }
-
-set timeoutlen=500
-let g:maplocalleader = ','
-nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-
-" vim-slime (REPL send)
-nnoremap <silent> <leader>sl <Plug>SlimeLineSend     " send current line
-vnoremap <silent> <leader>sr <Plug>SlimeRegionSend   " send visual selection
-
-" vim-gitgutter (hunk navigation & staging)
-nnoremap <silent> ]h :GitGutterNextHunk<CR>
-nnoremap <silent> [h :GitGutterPrevHunk<CR>
-nnoremap <silent> <leader>hs :GitGutterStageHunk<CR>
-nnoremap <silent> <leader>hu :GitGutterUndoHunk<CR>
-
-" vim-oblique (Oblique Strategies)
-nnoremap <silent> <leader>ob :Oblique<CR>
-
-" vim-github-dashboard
-nnoremap <silent> <leader>gh :GitHubDashboard<CR>
-
-" vim-emoji
-nnoremap <silent> <leader>ei :Emoji<CR>
-
-" markdown-toc
-nnoremap <silent> <leader>mt :GenTocGFM<CR>
-
-" gv.vim (Git commit browser)
-nnoremap <silent> <leader>gv :GV<CR>
-
-" csv.vim
-nnoremap <silent> <leader>co :CSVOpen<CR>
-nnoremap <silent> <leader>ca :CSVAlign<CR>
-
-" JSON formatting (requires `jq` installed)
-autocmd FileType json nnoremap <buffer> <silent> <leader>jf :%!jq .<CR>
-
-" vim-startify
-nnoremap <silent> <leader>as :Startify<CR>
+" Uncomment to use minimal built-in statusline instead of airline
+" set statusline=%f\ %m%r%h%w\ [%{&ff}]\ %y\ [%p%%]\ [L:%l/%L,C:%c]
